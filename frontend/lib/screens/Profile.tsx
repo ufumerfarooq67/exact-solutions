@@ -17,6 +17,7 @@ export default function Profile() {
 
   if (!user) return null;
 
+  // API - Hooks
   const updateMutation = useMutation({
     mutationFn: (data: { name: string }) => apiRequest("PATCH", `${process.env.NEXT_PUBLIC_SERVER_URL}/v1/users/profile`, data),
     onSuccess: (updatedUser) => {
@@ -36,6 +37,7 @@ export default function Profile() {
     },
   });
 
+  // Handlers
   const handleSave = () => {
     updateMutation.mutate({ name });
   };
@@ -63,7 +65,7 @@ export default function Profile() {
                 <button
                   onClick={() => {
                     setEditing(false);
-                    setName(user.name);
+                    setName(user?.name);
                   }}
                   className="text-red-500 flex items-center gap-1"
                 >
@@ -75,15 +77,15 @@ export default function Profile() {
           <CardContent className="space-y-6">
             <div className="flex items-center gap-4">
               <Avatar className="h-20 w-20">
-                <AvatarFallback className="text-2xl">{name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                <AvatarFallback className="text-2xl">{name?.substring(0, 2)?.toUpperCase()}</AvatarFallback>
               </Avatar>
               <div className="flex-1">
                 {editing ? (
                   <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full border rounded px-2 py-1" />
                 ) : (
-                  <h2 className="text-2xl font-bold">{user.name}</h2>
+                  <h2 className="text-2xl font-bold">{user?.name}</h2>
                 )}
-                <Badge className="mt-2">{user.role === "admin" ? "Administrator" : "User"}</Badge>
+                <Badge className="mt-2">{user?.role === "admin" ? "Administrator" : "User"}</Badge>
               </div>
             </div>
 
@@ -93,7 +95,7 @@ export default function Profile() {
                 <div className="flex-1">
                   <p className="text-sm font-medium text-muted-foreground">Email</p>
 
-                  <p className="text-base font-medium">{user.email}</p>
+                  <p className="text-base font-medium">{user?.email}</p>
                 </div>
               </div>
 
@@ -101,7 +103,7 @@ export default function Profile() {
                 <Shield className="h-5 w-5 text-muted-foreground" />
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Role</p>
-                  <p className="text-base font-medium capitalize">{user.role}</p>
+                  <p className="text-base font-medium capitalize">{user?.role}</p>
                 </div>
               </div>
             </div>
@@ -115,7 +117,7 @@ export default function Profile() {
           <CardContent className="space-y-4">
             <div>
               <p className="text-sm font-medium text-muted-foreground mb-1">User ID</p>
-              <p className="text-xs font-mono bg-muted p-2 rounded">{user.id}</p>
+              <p className="text-xs font-mono bg-muted p-2 rounded">{user?.id}</p>
             </div>
           </CardContent>
         </Card>

@@ -98,7 +98,7 @@ export default function Dashboard() {
         })}
       </div>
 
-      {tasks && tasks.length === 0 && (
+      {tasks && tasks?.length === 0 && (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16">
             <ListTodo className="h-16 w-16 text-muted-foreground mb-4" />

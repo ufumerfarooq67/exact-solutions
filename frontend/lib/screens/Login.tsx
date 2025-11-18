@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 
@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 
 export default function Login() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { login, clearUser } = useAuth();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,6 +28,10 @@ export default function Login() {
     },
   });
 
+  // Handlers
+  const init = () => {
+    clearUser()
+  };
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     try {
@@ -61,6 +65,10 @@ export default function Login() {
     }
   };
 
+  // Effects
+  useEffect(() => {
+    init();
+  }, []);
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">

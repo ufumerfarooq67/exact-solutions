@@ -1,23 +1,3 @@
-import { QueryFunction } from "@tanstack/react-query";
-
-function getAuthHeaders(): HeadersInit {
-  const token = localStorage.getItem('token');
-  const headers: HeadersInit = {};
-  
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-  
-  return headers;
-}
-
-async function throwIfResNotOk(res: Response) {
-  if (!res.ok) {
-    const text = (await res.text()) || res.statusText;
-    throw new Error(`${res.status}: ${text}`);
-  }
-}
-
 // lib/lib/apiRequest.ts
 export async function apiRequest<T = any>(
   method: "GET" | "POST" | "PATCH" | "DELETE",
@@ -56,23 +36,4 @@ export async function apiRequest<T = any>(
   return JSON.parse(text) as T;
 }
 
-
-
-type UnauthorizedBehavior = "returnNull" | "throw";
-export const getQueryFn: <T>(options: {
-  on401: UnauthorizedBehavior;
-}) => QueryFunction<T> =
-  ({ on401: unauthorizedBehavior }) =>
-  async ({ queryKey }) => {
-    const res = await fetch(queryKey.join("/") as string, {
-      headers: getAuthHeaders(),
-    });
-
-    if (unauthorizedBehavior === "returnNull" && res.status === 401) {
-      return null;
-    }
-
-    await throwIfResNotOk(res);
-    return await res.json();
-  };
 
