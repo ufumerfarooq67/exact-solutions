@@ -1,0 +1,76 @@
+services:
+  # PostgreSQL - for Users & Tasks (TypeORM)
+  postgres:
+    image: postgres:16-alpine
+    container_name: taskcollab-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: taskcollab
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # MongoDB - for real-time Event Logs
+  mongo:
+    image: mongo:7
+    container_name: taskcollab-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: task-events
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
+
+  # NestJS Backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: taskcollab-backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+      - POSTGRES_HOST=postgres
+      - MONGODB_URI=mongodb://mongo:27017/task-events
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+      - mongo
+    networks:
+      - app-network
+    command: npm run start:dev
+
+  # Bonus: Redis (uncomment when you add caching)
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: taskcollab-redis
+  #   restart: unless-stopped
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - app-network
+
+volumes:
+  postgres_data:
+  mongo_data:
+  # redis_data:
+
+networks:
+  app-network:
+    driver: bridge
