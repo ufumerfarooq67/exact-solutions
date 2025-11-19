@@ -182,4 +182,5 @@ All tests pass on Windows
  - Refresh Token Functionality
  - Http Only Cookie
  - GraphQL/Hasura (best to improve performance)
+ - Prisma ORM
  - and more....
