@@ -179,3 +179,7 @@ All tests pass on Windows
  - Redis Cache to be generic
  - Proper frontend Form Validation using Zod or Yup
  - Backend input sanitization
+ - Refresh Token Functionality
+ - Http Only Cookie
+ - GraphQL/Hasura (best to improve performance)
+ - and more....
