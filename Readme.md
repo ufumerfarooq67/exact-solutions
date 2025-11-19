@@ -17,7 +17,7 @@
 | Admin | admin@example.com | Test*123   |
 ------------------------------------------
 
-### Features Implemented (Everything Checked)
+### Features Implemented
 
 | Requirement                                              | Status | Details |
 |----------------------------------------------------------|--------|-------|
@@ -65,6 +65,7 @@ repo/
 │   │   ├── common/
 │   │   └── app.module.ts
 │   └── Dockerfile
+|   └── docker-compose.yml
 ├── frontend/                 # Next.js 14 App Router
 │   ├── app/
 │   │   ├── (auth)/dashboard
@@ -79,7 +80,7 @@ repo/
 │   │   ├── hooks/
 │   │   └── tests/           # RTL tests
 │   └── Dockerfile
-├── docker-compose.yml
+
 ```
 
 ---
@@ -90,7 +91,13 @@ repo/
 # Clone both repos (or the monorepo)
 git clone https://github.com/ufumerfarooq67/exact-solutions
 
-# Start everything with Docker
+# Frontend
+cd frontend
+npm run dev
+
+# Backend
+cd backend
+# Start everything inside backend with Docker
 docker-compose up --build
 ```
 
