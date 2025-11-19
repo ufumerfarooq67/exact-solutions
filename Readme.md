@@ -183,6 +183,7 @@ All tests pass on Windows
  - Http Only Cookie
  - GraphQL/Hasura (best to improve performance)
  - Prisma ORM
+ - Hight Order Component (Route Authentication and Authorization)
  - and more....
 
 
