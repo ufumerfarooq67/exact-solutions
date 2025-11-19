@@ -7,6 +7,7 @@ import { User } from '@users/entities/user.entity';
 import { EventsGateway } from '@events/events.gateway';
 import { EventsService } from '@events/events.service';
 import { ForbiddenException } from '@nestjs/common';
+import { RedisService } from '@/common/cache/redis-cache.service';
 
 const mockTask = {
   id: 1,
@@ -40,6 +41,9 @@ describe('TasksService', () => {
   };
 
   const mockEventsService = { log: jest.fn() };
+  const mockRedisService = { del: jest.fn(), generateCacheKey: jest.fn() };
+
+
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -49,6 +53,7 @@ describe('TasksService', () => {
         { provide: getRepositoryToken(User), useValue: mockUserRepo },
         { provide: EventsGateway, useValue: mockEventsGateway },
         { provide: EventsService, useValue: mockEventsService },
+        { provide: RedisService, useValue: mockRedisService },
       ],
     }).compile();
 

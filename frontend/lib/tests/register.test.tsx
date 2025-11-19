@@ -43,7 +43,7 @@ describe('Register Page - Full Integration Test', () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => ({
-        token: 'fake-jwt-456',
+        access_token: 'fake-jwt-456',
         user: { id: 2, name: 'John Doe', email: 'john@example.com', role: 'user' },
       }),
     });

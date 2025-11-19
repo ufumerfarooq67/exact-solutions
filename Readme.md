@@ -3,13 +3,21 @@
 
 **  
 
-**Live Demo:** https://taskflow.yourname.live  
-**Frontend (Next.js 14):** https://github.com/yourusername/taskflow-frontend  
-**Backend (NestJS):** https://github.com/yourusername/taskflow-backend  
+**Live Demo:** https://exact-solutions.vercel.app/login
 
-You are looking at a **production-grade, fully tested, Dockerized real-time task management system** that exceeds every single requirement and bonus point of the interview task.
+**Frontend (Next.js 16):** https://github.com/ufumerfarooq67/exact-solutions/tree/main/frontend
+
+**Backend (NestJS):** https://github.com/ufumerfarooq67/exact-solutions/tree/main/backend 
 
 ---
+
+## Credentials
+
+| Role  | Email             | Password   | Role
+|-------|-------------------|------------|---------| 
+| User  | john@example.com  | Test*123   | User
+| Admin | admin@example.com | Test*123   | 
+----------------------------------------------------
 
 ### Features Implemented (Everything Checked)
 
@@ -26,7 +34,7 @@ You are looking at a **production-grade, fully tested, Dockerized real-time task
 | JWT Auth + Protected Routes + Role-Based UI              | Done   | Middleware + context |
 | React Testing Library + Jest Frontend Tests (Login + Register) | Done | 100% pass |
 | Docker + Docker Compose (Postgres + Mongo  + Backend + Frontend) | Done | One command deploy |
-| Redis caching for frequently accessed data               | Pending | Could not start due to time constraint
+| Redis caching for frequently accessed data               | Done | Tasks module only
 | CI/CD GitHub Actions (lint → test → build → deploy)      | Pending | Could not start due to time constraint
 | Cloudflare Tunnel for secure local dev & demo            | Pending | Could not start due to time constraint
 | Live production demo accessible 24/7                    | Done   | See link above |
@@ -56,7 +64,7 @@ repo/
 │   │   ├── users/
 │   │   ├── tasks/
 │   │   ├── events/          # MongoDB event logging
-│   │   ├── websocket/
+│   │   ├── common/
 │   │   └── app.module.ts
 │   └── Dockerfile
 ├── frontend/                 # Next.js 14 App Router
