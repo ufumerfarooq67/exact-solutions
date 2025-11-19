@@ -1,7 +1,5 @@
-# **TaskFlow – Real-Time Collaborative Task Management System**  
-**Senior Full-Stack Engineer Take-Home Assignment – 100% COMPLETED + ALL BONUS POINTS**
+# **Real-Time Collaborative Task Management System**  
 
-**  
 
 **Live Demo:** https://exact-solutions.vercel.app/login
 
