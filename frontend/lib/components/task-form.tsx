@@ -25,7 +25,7 @@ export function TaskForm({ task, users = [], onSubmit, onCancel, isLoading }: Ta
       title: task?.title ?? "",
       description: task?.description ?? "",
       status: task?.status ?? "pending",
-      assignedToId: task?.assignedToId ?? (user.role === "admin" ? user.id : ""),
+      assignedToId: task?.assignedToId ?? (user.role === "admin" ? "": user.id),
     },
   });
 
