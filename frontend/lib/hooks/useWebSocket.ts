@@ -15,7 +15,7 @@ export function useWebSocket() {
     if (!token) return;
 
     // Connect to your NestJS WebSocket at /events namespace
-    const socket = io((process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000") + "/events", {
+    const socket = io((process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:4000") + "/events", {
       path: "/socket.io",
       auth: {
         token: token.startsWith("Bearer ") ? token : `Bearer ${token}`,
