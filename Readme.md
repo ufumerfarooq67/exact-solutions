@@ -16,7 +16,7 @@
 | Role  | Email             | Password   | Role
 |-------|-------------------|------------|---------| 
 | User  | john@example.com  | Test*123   | User
-| Admin | admin@example.com | Test*123   | 
+| Admin | admin@example.com | Test*123   | Admin
 ----------------------------------------------------
 
 ### Features Implemented (Everything Checked)
