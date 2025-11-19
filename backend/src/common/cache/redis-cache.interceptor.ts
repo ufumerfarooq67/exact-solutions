@@ -32,6 +32,7 @@ export class CacheInterceptor implements NestInterceptor {
     // Try Redis first
     const cached = await this.redisService.get(cacheKey);
     if (cached) {
+      console.log("RETURN CACHE");
       return of(JSON.parse(cached));
     }
 
