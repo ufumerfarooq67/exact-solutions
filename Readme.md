@@ -155,7 +155,7 @@ All tests pass on Windows
 
 ---
 
-### What Makes This Submission Exceptional
+### Deliverables
 
 - 100% TypeScript everywhere  
 - Full test coverage (backend Jest + frontend RTL)  
@@ -168,3 +168,14 @@ All tests pass on Windows
 - Works perfectly on Windows (your setup)
 
 ---
+
+
+### Improvements
+ - Better folder structure e.g Domain Driver or Feature Based (Frontend)
+ - Security Middelwares
+ - Policy Based or Permission Based Authorization
+ - Event Log Module on Portal
+ - User CRUD on Portal (APIs are implemented)
+ - Redis Cache to be generic
+ - Proper frontend Form Validation using Zod or Yup
+ - Backend input sanitization
