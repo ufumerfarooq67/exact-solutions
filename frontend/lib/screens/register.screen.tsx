@@ -44,7 +44,7 @@ export default function Register() {
       }
 
       const result = await response.json();
-      login(result.user, result.token);
+      login(result.user, result.access_token);
       toast({
         title: 'Account created!',
         description: 'Welcome to TaskFlow',
