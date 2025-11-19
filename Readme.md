@@ -108,11 +108,6 @@ Services will be available at:
 
 ---
 
-Backend running at http://localhost:4000
-2025-11-19 21:01:41 API Base URL → http://localhost:4000/v1
-2025-11-19 21:01:41 Swagger UI → http://localhost:4000/api
-2025-11-19 21:01:41 WebSocket → ws://localhost:4000/events
-
 ### Environment Variables
 
 Create `.env` files in both folders (examples provided in repo):
