@@ -12,6 +12,7 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { EventsGateway } from '@events/events.gateway';
 import { EventsService } from '@events/events.service';
 import { User, UserRole } from '@/users/entities/user.entity';
+import { RedisService } from '@/common/cache/redis-cache.service';
 
 @Injectable()
 export class TasksService {
@@ -21,6 +22,7 @@ export class TasksService {
     @InjectRepository(User) private userRepo: Repository<User>,
     private eventsGateway: EventsGateway,
     private eventsService: EventsService,
+    private redisService: RedisService,
   ) {}
 
   async create(dto: CreateTaskDto, user: any): Promise<Task> {
@@ -84,6 +86,11 @@ export class TasksService {
       );
     }
 
+    // Evict Cache
+    await this.redisService.del(
+      this.redisService.generateCacheKey(user.userId, user.role),
+    );
+
     return savedTask;
   }
 
@@ -95,11 +102,13 @@ export class TasksService {
       });
     }
 
-    return this.taskRepo.find({
+    const tasks = await this.taskRepo.find({
       where: [{ createdById: user.userId }, { assignedToId: user.userId }],
       relations: ['assignedTo', 'createdBy'],
       order: { createdAt: 'DESC' },
     });
+
+    return tasks;
   }
 
   async findOne(id: number): Promise<Task> {
@@ -111,7 +120,6 @@ export class TasksService {
     return task;
   }
 
-
   async update(id: number, dto: UpdateTaskDto, user: any): Promise<Task> {
     const task = await this.taskRepo.findOne({
       where: { id },
@@ -121,7 +129,8 @@ export class TasksService {
     if (!task) throw new NotFoundException('Task not found');
 
     // 2. Authorization check (owner or admin)
-    const isOwner = task.createdById === user.userId || task.assignedToId === user.userId;
+    const isOwner =
+      task.createdById === user.userId || task.assignedToId === user.userId;
     const isAdmin = user.role === UserRole.ADMIN;
 
     if (!isOwner && !isAdmin) {
@@ -155,6 +164,11 @@ export class TasksService {
 
     this.eventsGateway.emitGlobal('taskUpdated', updatedTask);
 
+    // Evict Cache
+    await this.redisService.del(
+      this.redisService.generateCacheKey(user.userId, user.role),
+    );
+
     return updatedTask;
   }
 
@@ -163,5 +177,10 @@ export class TasksService {
     await this.taskRepo.remove(task);
     await this.eventsService.log('task.deleted', id, user.userId);
     this.eventsGateway.emitGlobal('taskDeleted', { id });
+
+    // Evict Cache
+    await this.redisService.del(
+      this.redisService.generateCacheKey(user.userId, user.role),
+    );
   }
 }

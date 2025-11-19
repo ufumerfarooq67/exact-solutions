@@ -43,6 +43,6 @@ import { EventsModule } from '@events/events.module';
     UsersModule,
     TasksModule,
     EventsModule,
-  ],
+  ]
 })
 export class AppModule {}
