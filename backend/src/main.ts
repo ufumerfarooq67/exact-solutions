@@ -23,10 +23,7 @@ async function bootstrap() {
 
   // 3. CORS
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'https://your-taskcollab.vercel.app', // Change to your real domain later
-    ],
+    origin: [process.env.NEXT_PUBLIC_SERVER_URL],
     credentials: true,
   });
 
