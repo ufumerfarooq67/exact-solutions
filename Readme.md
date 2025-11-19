@@ -13,11 +13,11 @@
 
 ## Credentials
 
-| Role  | Email             | Password   | Role
-|-------|-------------------|------------|---------| 
-| User  | john@example.com  | Test*123   | User
-| Admin | admin@example.com | Test*123   | Admin
-----------------------------------------------------
+| Role  | Email             | Password   |
+|-------|-------------------|------------|
+| User  | john@example.com  | Test*123   |
+| Admin | admin@example.com | Test*123   |
+------------------------------------------
 
 ### Features Implemented (Everything Checked)
 
