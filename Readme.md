@@ -3,6 +3,8 @@
 
 **Live Demo:** https://exact-solutions.vercel.app/login
 
+**Swagger API:** https://exact-solutions-production.up.railway.app/api
+
 **Frontend (Next.js 16):** https://github.com/ufumerfarooq67/exact-solutions/tree/main/frontend
 
 **Backend (NestJS):** https://github.com/ufumerfarooq67/exact-solutions/tree/main/backend 
