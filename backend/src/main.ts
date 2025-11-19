@@ -23,7 +23,7 @@ async function bootstrap() {
 
   // 3. CORS
   app.enableCors({
-    origin: [process.env.SOURCE_URL],
+    origin: [process.env.SOURCE_URL], // Frontend url
     credentials: true,
   });
 
