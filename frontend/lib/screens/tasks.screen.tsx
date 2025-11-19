@@ -23,9 +23,11 @@ import {
 } from "@/lib/components/ui/alert-dialog";
 import { ITask, IUser } from "../types";
 import { TASKS_QUERY_KEY } from "../constants";
+import { useAuth } from "../contexts/auth-context";
 
 export default function Tasks() {
   const { toast } = useToast();
+  const {user} = useAuth()
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<any | null>(null);
   const [deletingTaskId, setDeletingTaskId] = useState<number | null>(null);
@@ -38,6 +40,7 @@ export default function Tasks() {
   const { data: users } = useQuery<IUser[]>({
     queryKey: ["users"],
     queryFn: () => apiRequest<IUser[]>("GET", `${process.env.NEXT_PUBLIC_SERVER_URL}/v1/users`),
+    enabled: user.role === "admin"
   });
 
   const createMutation = useMutation({
