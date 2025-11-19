@@ -1,6 +1,6 @@
 "use client"
 
-import { useAuth } from '@/lib/contexts/AuthContext';
+import { useAuth } from '@/lib/contexts/auth-context';
 import { Redirect } from 'wouter';
 import { Skeleton } from '@/lib/components/ui/skeleton';
 

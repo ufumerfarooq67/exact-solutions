@@ -5,11 +5,11 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { Button } from "@/lib/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/lib/components/ui/dialog";
-import { TaskCard } from "@/lib/components/TaskCard";
-import { TaskForm } from "@/lib/components/TaskForm";
+import { TaskCard } from "@/lib/components/task-card";
+import { TaskForm } from "@/lib/components/task-form";
 import { Skeleton } from "@/lib/components/ui/skeleton";
 import { useToast } from "@/lib/hooks/use-toast";
-import { apiRequest } from "@/lib/lib/queryClient";
+import { apiRequest } from "@/lib/utils/queryClient";
 
 import {
   AlertDialog,
@@ -21,7 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/lib/components/ui/alert-dialog";
-import { Task, User } from "../types";
+import { ITask, IUser } from "../types";
 import { TASKS_QUERY_KEY } from "../constants";
 
 export default function Tasks() {
@@ -30,14 +30,14 @@ export default function Tasks() {
   const [editingTask, setEditingTask] = useState<any | null>(null);
   const [deletingTaskId, setDeletingTaskId] = useState<number | null>(null);
 
-  const { data: tasks, isLoading: tasksLoading } = useQuery<Task[]>({
+  const { data: tasks, isLoading: tasksLoading } = useQuery<ITask[]>({
     queryKey: TASKS_QUERY_KEY,
-    queryFn: () => apiRequest<Task[]>("GET", `${process.env.NEXT_PUBLIC_SERVER_URL}/v1/tasks`),
+    queryFn: () => apiRequest<ITask[]>("GET", `${process.env.NEXT_PUBLIC_SERVER_URL}/v1/tasks`),
   });
 
-  const { data: users } = useQuery<User[]>({
+  const { data: users } = useQuery<IUser[]>({
     queryKey: ["users"],
-    queryFn: () => apiRequest<User[]>("GET", `${process.env.NEXT_PUBLIC_SERVER_URL}/v1/users`),
+    queryFn: () => apiRequest<IUser[]>("GET", `${process.env.NEXT_PUBLIC_SERVER_URL}/v1/users`),
   });
 
   const createMutation = useMutation({

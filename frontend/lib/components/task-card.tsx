@@ -6,32 +6,22 @@ import { Button } from "@/lib/components/ui/button";
 import { Avatar, AvatarFallback } from "@/lib/components/ui/avatar";
 import { Calendar, Edit, Trash2, User } from "lucide-react";
 import { format } from "date-fns";
-import { useAuth } from "@/lib/contexts/AuthContext";
-import { toTitleCase } from "../lib/utils";
+import { useAuth } from "@/lib/contexts/auth-context";
+import { toTitleCase } from "../utils/methods";
+import { STATUS_COLORS } from "../constants";
+import { ITask, IUser } from "../types";
 
 interface TaskCardProps {
-  task: any;
-  assignee?: any;
-  creator?: any;
+  task: ITask;
+  assignee?: IUser;
+  creator?: IUser;
   onEdit?: () => void;
   onDelete?: () => void;
 }
 
-const statusColors = {
-  pending: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
-  in_progress: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
-  completed: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
-};
-
-const priorityColors = {
-  low: "border-green-300 dark:border-green-700",
-  medium: "border-yellow-300 dark:border-yellow-700",
-  high: "border-red-300 dark:border-red-700",
-};
-
 export function TaskCard({ task, assignee, creator, onEdit, onDelete }: TaskCardProps) {
   const { user, isAdmin } = useAuth();
-  const canModify = isAdmin || user?.id === creator.id || user?.id === assignee.id;
+  const canModify = isAdmin || user?.id === creator?.id || user?.id === assignee?.id;
 
   return (
     <Card className="hover-elevate" data-testid={`card-task-${task.id}`}>
@@ -41,7 +31,7 @@ export function TaskCard({ task, assignee, creator, onEdit, onDelete }: TaskCard
             {task.title}
           </h3>
         </div>
-        <Badge className={`${statusColors[task.status]} shrink-0`} data-testid={`badge-status-${task.id}`}>
+        <Badge className={`${STATUS_COLORS[task.status]} shrink-0`} data-testid={`badge-status-${task.id}`}>
           {toTitleCase(task.status.replace("_", " "))}
         </Badge>
       </CardHeader>
@@ -64,7 +54,7 @@ export function TaskCard({ task, assignee, creator, onEdit, onDelete }: TaskCard
           )}
         </div>
       </CardContent>
-      
+
       <CardFooter className="flex items-center justify-between gap-2 pt-4">
         <div className="flex items-center gap-2"></div>
         {canModify && (

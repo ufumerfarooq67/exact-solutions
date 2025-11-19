@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "@/lib/contexts/AuthContext";
+import { useAuth } from "@/lib/contexts/auth-context";
 import { Card, CardContent, CardHeader, CardTitle } from "@/lib/components/ui/card";
 import { Avatar, AvatarFallback } from "@/lib/components/ui/avatar";
 import { Badge } from "@/lib/components/ui/badge";
 import { User, Shield, Edit, Check, X } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "../lib/queryClient";
+import { apiRequest } from "../utils/queryClient";
 import { toast } from "../hooks/use-toast";
 
 export default function Profile() {

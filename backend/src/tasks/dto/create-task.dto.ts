@@ -1,4 +1,3 @@
-// src/tasks/dto/create-task.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { TaskStatus } from '../entities/task.entity';

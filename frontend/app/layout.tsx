@@ -1,18 +1,13 @@
-// app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-
 import { TooltipProvider } from "@/lib/components/ui/tooltip";
+import { AuthProvider } from "@/lib/contexts/auth-context";
+import { ClientToaster } from "@/lib/components/client-toast";
+import { QueryProvider } from "@/lib/components/query-provider";
 
 
-
-// Optional: Devtools (only in development)
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { AuthProvider } from "@/lib/contexts/AuthContext";
-import { ClientToaster } from "@/lib/components/ClientToast";
-import { QueryProvider } from "@/lib/components/QueryProvider";
 
 // Fonts
 const geistSans = Geist({
@@ -27,9 +22,8 @@ const geistMono = Geist_Mono({
 
 // Metadata
 export const metadata: Metadata = {
-  title: "My App", // change this
-  description: "The best Next.js app in 2025",
-  // add more: icons, openGraph, etc.
+  title: "Task Management",
+  description: "Manage your TODOs here",
 };
 
 

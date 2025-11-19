@@ -9,9 +9,8 @@ import { Input } from "@/lib/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/lib/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/lib/components/ui/form";
 import { useToast } from "@/lib/hooks/use-toast";
-import { useAuth } from "@/lib/contexts/AuthContext";
+import { useAuth } from "@/lib/contexts/auth-context";
 import { LogIn, UserPlus } from "lucide-react";
-import type { z } from "zod";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
@@ -21,7 +20,6 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<any>({
-    // resolver: zodResolver(any),
     defaultValues: {
       email: "",
       password: "",
@@ -29,9 +27,6 @@ export default function Login() {
   });
 
   // Handlers
-  const init = () => {
-    clearUser()
-  };
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     try {
@@ -65,10 +60,10 @@ export default function Login() {
     }
   };
 
-  // Effects
   useEffect(() => {
-    init();
+    clearUser();
   }, []);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">

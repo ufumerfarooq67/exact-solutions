@@ -1,5 +1,8 @@
-// src/auth/auth.service.ts
-import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '@users/users.service';
 import { RegisterDto } from './dto/register.dto';
@@ -13,15 +16,17 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(dto: RegisterDto): Promise<any> {
+  async register(dto: RegisterDto) {
     const existing = await this.usersService.findByEmail(dto.email);
     if (existing) throw new BadRequestException('Email already exists');
 
     const user = await this.usersService.create(dto);
-    const { password, ...result } = user;
-    return result;
-  }
 
+    return {
+      user: { id: user.id, email: user.email, name: user.name },
+      access_token: this.jwtService.sign({ sub: user.id, email: user.email }),
+    };
+  }
   async login(dto: LoginDto) {
     const user = await this.usersService.findByEmail(dto.email);
     if (!user || !(await user.validatePassword(dto.password))) {
@@ -31,7 +36,12 @@ export class AuthService {
     const payload = { email: user.email, sub: user.id, role: user.role };
     return {
       access_token: this.jwtService.sign(payload),
-      user: { id: user.id, email: user.email, name: user.name, role: user.role },
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      },
     };
   }
 

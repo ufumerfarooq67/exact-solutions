@@ -2,12 +2,27 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
+"jest": {
+  "testEnvironment": "jsdom",
+  "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"],
+  "moduleNameMapper": {
+    "^@/app/(.*)$": "<rootDir>/app/$1",
+    "^@/lib/(.*)$": "<rootDir>/lib/$1"
+  },
+  "transform": {
+    "^.+\\.(ts|tsx)$": "ts-jest"
+  },
+  "testRegex": ".*\\.(test|spec)\\.(ts|tsx)$",
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
+},
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "@neondatabase/serverless": "^0.10.4",
@@ -46,6 +61,7 @@
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^11.13.1",
     "input-otp": "^1.4.2",
+    "jest": "^30.2.0",
     "lucide-react": "^0.453.0",
     "next": "16.0.3",
     "next-themes": "^0.4.6",
@@ -69,12 +85,18 @@
     "@tailwindcss/postcss": "^4",
     "@tailwindcss/typography": "^0.5.15",
     "@tanstack/react-query-devtools": "^5.90.2",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
+    "jest-environment-jsdom": "^30.2.0",
     "tailwindcss": "^4",
+    "ts-jest": "^29.4.5",
     "typescript": "^5"
   }
 }

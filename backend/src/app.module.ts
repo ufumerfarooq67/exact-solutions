@@ -1,4 +1,3 @@
-// src/app.module.ts
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,7 +8,6 @@ import { UsersModule } from '@users/users.module';
 import { TasksModule } from '@tasks/tasks.module';
 import { EventsModule } from '@events/events.module';
 
-//
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,7 +25,7 @@ import { EventsModule } from '@events/events.module';
         password: configService.get('database.postgres.password'),
         database: configService.get('database.postgres.database'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true, // Never use in production!
+        synchronize: true, // Never use in production
         logging: process.env.NODE_ENV !== 'production',
       }),
       inject: [ConfigService],

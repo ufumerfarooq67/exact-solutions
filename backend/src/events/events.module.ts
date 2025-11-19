@@ -12,7 +12,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     MongooseModule.forFeature([
       { name: EventLog.name, schema: EventLogSchema },
     ]),
-    // THIS IS THE CORRECT WAY — JwtModule must be imported here!
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => ({

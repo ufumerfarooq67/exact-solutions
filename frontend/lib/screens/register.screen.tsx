@@ -7,7 +7,7 @@ import { Input } from '@/lib/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/lib/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/lib/components/ui/form';
 import { useToast } from '@/lib/hooks/use-toast';
-import { useAuth } from '@/lib/contexts/AuthContext';
+import { useAuth } from '@/lib/contexts/auth-context';
 import { UserPlus, LogIn } from 'lucide-react';
 import type { z } from 'zod';
 import { useRouter } from 'next/navigation';
@@ -22,7 +22,7 @@ export default function Register() {
 
   const form = useForm<any>({
     defaultValues: {
-      username: '',
+      name: '',
       email: '',
       password: '',
       role: 'user',

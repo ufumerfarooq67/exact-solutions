@@ -35,7 +35,6 @@ import { RolesGuard } from '@common/guards/role.guard';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // ==================== USER PROFILE (Authenticated) ====================
   @Get('profile')
   @ApiOperation({ summary: 'Get current user profile' })
   @ApiResponse({ status: 200, description: 'Returns current user data' })
@@ -45,7 +44,7 @@ export class UsersController {
   }
 
   @Patch('profile')
-  @ApiOperation({ summary: 'Update current user profile (name only)' })
+  @ApiOperation({ summary: 'Update current user profile (name only)' }) // Can be extended.
   @ApiBody({ type: UpdateProfileDto })
   @ApiResponse({ status: 200, description: 'Profile updated successfully' })
   @ApiResponse({ status: 400, description: 'Invalid input' })
@@ -53,7 +52,9 @@ export class UsersController {
     return this.usersService.updateProfile(user.userId, dto);
   }
 
-  // ==================== ADMIN ONLY ENDPOINTS ====================
+  // =====================
+  // ADMIN ONLY ENDPOINTS 
+  // =====================
   @Roles(UserRole.ADMIN)
   @Get()
   @ApiOperation({ summary: '[ADMIN] Get all users' })

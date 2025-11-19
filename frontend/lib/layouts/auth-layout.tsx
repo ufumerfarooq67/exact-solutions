@@ -1,7 +1,7 @@
 "use client"
 
-import { AppSidebar } from "../components/AppSidebar";
-import { ThemeToggle } from "../components/ThemeToggle";
+import { AppSidebar } from "../components/app-sidebar";
+import { ThemeToggle } from "../components/theme-toggle";
 import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
 import { useWebSocket } from "../hooks/useWebSocket";
 

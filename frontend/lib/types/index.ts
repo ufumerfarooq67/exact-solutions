@@ -1,5 +1,7 @@
+import { STATUS_COLORS } from "../constants";
+
 export type UserRole = "user" | "admin" | "manager"; // adjust if you have more
-export type TaskStatus = "pending" | "in-progress" | "completed" | "cancelled";
+export type TaskStatus =  "pending" | "in_progress" | "completed";
 export type TaskPriority = "low" | "medium" | "high" | "urgent";
 export type EventType =
   | "task.created"
@@ -11,23 +13,26 @@ export type EventType =
   | "user.logout"; // extend as needed
 
 
-// types/tasks.ts
-export interface Task {
+
+export interface IUser {
   id: number;
-  title: string;
-  description?: string;
-  assignedTo?: string; // or user object
-  createdBy?: string;  // or user object
-  status?: string;
+  email: string;
+  password: string;
+  name: string;
+  role: string;
   createdAt: string;
   updatedAt: string;
 }
 
-
-// types/users.ts
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
+export interface ITask {
+  id: number;
+  title: string;
+  description: string;
+  status: "pending" | "in_progress" | "completed"; // or string if dynamic
+  assignedToId: number;
+  createdById: number;
+  createdAt: string;
+  updatedAt: string;
+  assignedTo: IUser;
+  createdBy: IUser;
 }

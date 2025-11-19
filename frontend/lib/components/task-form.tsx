@@ -6,12 +6,12 @@ import { Input } from "@/lib/components/ui/input";
 import { Textarea } from "@/lib/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/lib/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/lib/components/ui/form";
-import { useAuth } from "@/lib/contexts/AuthContext";
-import { User } from "../types";
+import { useAuth } from "@/lib/contexts/auth-context";
+import { ITask, IUser } from "../types";
 
 interface TaskFormProps {
-  task?: any;
-  users?: User[];
+  task?: ITask;
+  users?: IUser[];
   onSubmit: (data: any) => void;
   onCancel: () => void;
   isLoading?: boolean;
@@ -21,19 +21,12 @@ export function TaskForm({ task, users = [], onSubmit, onCancel, isLoading }: Ta
   const { user } = useAuth();
 
   const form = useForm<any>({
-    defaultValues: task
-      ? {
-          title: task?.title ?? "",
-          description: task?.description ?? "",
-          status: task?.status ?? "pending",
-          assignedToId: task?.assignedToId ?? "",
-        }
-      : {
-          title: "",
-          description: "",
-          status: "pending",
-          assignedToId: user.role === "admin" ? task?.assignedToId : user.id,
-        },
+    defaultValues: {
+      title: task?.title ?? "",
+      description: task?.description ?? "",
+      status: task?.status ?? "pending",
+      assignedToId: task?.assignedToId ?? (user.role === "admin" ? user.id : ""),
+    },
   });
 
   return (
@@ -113,7 +106,7 @@ export function TaskForm({ task, users = [], onSubmit, onCancel, isLoading }: Ta
                 return (
                   <FormItem>
                     <FormLabel>Assign To</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value ?? ""}>
+                    <Select onValueChange={field.onChange} value={String(field.value) ?? ""}>
                       <FormControl>
                         <SelectTrigger data-testid="select-task-assignee">
                           <SelectValue placeholder="Select user" />

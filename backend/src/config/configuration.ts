@@ -1,4 +1,3 @@
-// src/config/configuration.ts
 export default () => ({
   port: parseInt(process.env.PORT || '4000', 10),
   database: {

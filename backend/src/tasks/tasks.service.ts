@@ -1,5 +1,9 @@
 // src/tasks/tasks.service.ts → FINAL FIXED VERSION
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Task, TaskStatus } from './entities/task.entity';
@@ -19,7 +23,6 @@ export class TasksService {
     private eventsService: EventsService,
   ) {}
 
-  // src/tasks/tasks.service.ts → FINAL create() method (PERFECT, NO MORE ERRORS)
   async create(dto: CreateTaskDto, user: any): Promise<Task> {
     const isAdmin = user.role === 'admin';
 
@@ -32,11 +35,9 @@ export class TasksService {
         isAdmin && dto.assignedToId ? dto.assignedToId : user.userId,
     };
 
-    // This is the key: use insert() + get the inserted ID directly
     const insertResult = await this.taskRepo.insert(taskData);
     const insertedId = insertResult.identifiers[0].id as number;
 
-    // NOW fetch the full task with relations — 100% safe
     const savedTask = await this.taskRepo.findOne({
       where: { id: insertedId },
       relations: ['assignedTo', 'createdBy'],
@@ -44,20 +45,13 @@ export class TasksService {
 
     if (!savedTask) throw new Error('Task creation failed');
 
-    // Log & emit
-
+    // Event log
     await this.eventsService.log(
       'task.created',
       savedTask.id,
       user.userId,
       savedTask,
     );
-    // this.eventsGateway.emitGlobal('taskCreated', savedTask);
-
-    // // Notify assignee if not self
-    // if (savedTask.assignedToId && savedTask.assignedToId !== user.userId) {
-    //   this.eventsGateway.emitToUser(savedTask.assignedToId, 'taskAssigned', savedTask);
-    // }
 
     // Emit events based on creator role
     if (isAdmin) {
@@ -92,7 +86,7 @@ export class TasksService {
 
     return savedTask;
   }
-  // src/tasks/tasks.service.ts
+
   async findAll(user: any): Promise<Task[]> {
     if (user.role === 'admin') {
       return this.taskRepo.find({
@@ -101,7 +95,6 @@ export class TasksService {
       });
     }
 
-    // Regular user: only tasks they created OR assigned to
     return this.taskRepo.find({
       where: [{ createdById: user.userId }, { assignedToId: user.userId }],
       relations: ['assignedTo', 'createdBy'],
@@ -118,59 +111,49 @@ export class TasksService {
     return task;
   }
 
-  // src/tasks/tasks.service.ts → FINAL update() method (THIS WORKS 100%)
+
   async update(id: number, dto: UpdateTaskDto, user: any): Promise<Task> {
-    // STEP 1: Update the task (including assignedToId)
-    await this.taskRepo.update(id, dto as any);
-
-    // STEP 2: CLEAR CACHE + FORCE FRESH QUERY USING QUERY BUILDER
-    const updatedTask = await this.taskRepo
-      .createQueryBuilder('task')
-      .leftJoinAndSelect('task.assignedTo', 'assignedTo')
-      .leftJoinAndSelect('task.createdBy', 'createdBy')
-      .where('task.id = :id', { id })
-      .cache(false)
-      .getOne();
-
-    if (!updatedTask) throw new NotFoundException('Task not found');
-
-    // Now we have the REAL data
-    const oldAssignedToId =
-      dto.assignedToId !== undefined
-        ? (
-            await this.taskRepo.findOne({
-              where: { id },
-              select: ['assignedToId'],
-            })
-          )?.assignedToId
-        : updatedTask.assignedToId;
-
-    // Log & emit with CORRECT data
-    await this.eventsService.log('task.updated', id, user.userId, {
-      dto,
-      oldAssignedToId,
-      newTask: updatedTask,
+    const task = await this.taskRepo.findOne({
+      where: { id },
+      relations: ['createdBy'],
     });
 
-    this.eventsGateway.emitGlobal('taskUpdated', updatedTask);
+    if (!task) throw new NotFoundException('Task not found');
 
-    if (
-      dto.assignedToId !== undefined &&
-      dto.assignedToId !== oldAssignedToId
-    ) {
-      if (dto.assignedToId) {
-        this.eventsGateway.emitToUser(
-          dto.assignedToId,
-          'taskAssigned',
-          updatedTask,
-        );
-      }
-      if (oldAssignedToId) {
-        this.eventsGateway.emitToUser(oldAssignedToId, 'taskUnassigned', {
-          taskId: id,
-        });
-      }
+    // 2. Authorization check (owner or admin)
+    const isOwner = task.createdById === user.userId || task.assignedToId === user.userId;
+    const isAdmin = user.role === UserRole.ADMIN;
+
+    if (!isOwner && !isAdmin) {
+      throw new ForbiddenException('You can only update your own tasks');
     }
+
+    // 3. Detect assignment change for notification
+    const oldAssignedToId = task.assignedToId;
+    const newAssignedToId = dto.assignedToId;
+
+    // 4. Apply update
+    await this.taskRepo.update(id, dto as any);
+
+    // 5. Fetch updated task with relations (ONE QUERY ONLY)
+    const updatedTask = await this.taskRepo.findOne({
+      where: { id },
+      relations: ['assignedTo', 'createdBy'],
+    });
+
+    // This should never happen now, but keep for safety
+    if (!updatedTask) throw new NotFoundException('Task not found');
+
+    // 6. Emit real-time events
+    if (newAssignedToId && newAssignedToId !== oldAssignedToId) {
+      this.eventsGateway.emitToUser(
+        newAssignedToId,
+        'taskAssigned',
+        updatedTask,
+      );
+    }
+
+    this.eventsGateway.emitGlobal('taskUpdated', updatedTask);
 
     return updatedTask;
   }

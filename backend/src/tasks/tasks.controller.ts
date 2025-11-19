@@ -1,4 +1,3 @@
-// src/tasks/tasks.controller.ts
 import {
   Controller,
   Get,
@@ -31,7 +30,6 @@ export class TasksController {
     return this.tasksService.create(dto, user);
   }
 
-  // ADMIN: See ALL tasks | USER: See only own tasks
   @Get()
   @ApiOperation({ summary: 'Get tasks (Admin: all, User: own)' })
   findAll(@GetUser() user: any) {
@@ -48,7 +46,11 @@ export class TasksController {
   @Patch(':id')
   @UseGuards(TaskOwnershipGuard)
   @ApiOperation({ summary: 'Update task (only owner or admin)' })
-  update(@Param('id') id: number, @Body() dto: UpdateTaskDto, @GetUser() user: any) {
+  update(
+    @Param('id') id: number,
+    @Body() dto: UpdateTaskDto,
+    @GetUser() user: any,
+  ) {
     return this.tasksService.update(id, dto, user);
   }
 

@@ -1,4 +1,3 @@
-// src/auth/strategies/jwt.strategy.ts
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
@@ -16,12 +15,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: secret, // now guaranteed to be string
+      secretOrKey: secret,
     });
   }
 
+  /**
+   * Extra validation can be added here
+   * @param payload
+   * @returns user
+   */
   async validate(payload: any) {
-    // You can add extra validation here if you want
     if (!payload.sub || !payload.email || !payload.role) {
       throw new UnauthorizedException('Invalid token payload');
     }

@@ -1,4 +1,3 @@
-// src/tasks/entities/task.entity.ts
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -39,7 +38,6 @@ export class Task {
   @ApiProperty({ enum: TaskStatus, default: TaskStatus.TODO })
   status!: TaskStatus;
 
-  // Foreign key column
   @Column({ nullable: true })
   @ApiProperty({ example: 34, required: false })
   assignedToId?: number;

@@ -1,5 +1,9 @@
 // src/users/users.service.ts
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User, UserRole } from './entities/user.entity';
@@ -46,14 +50,12 @@ export class UsersService {
     return this.usersRepository.findOne({ where: { email } });
   }
 
-  // Update own profile
   async updateProfile(userId: number, dto: UpdateProfileDto): Promise<User> {
     const user = await this.findOne(userId);
     Object.assign(user, dto);
     return this.usersRepository.save(user);
   }
 
-  // Admin: update any user
   async update(id: number, dto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
 

@@ -1,4 +1,3 @@
-// src/main.ts → FINAL VERSION (100% PERFECT)
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
@@ -7,12 +6,12 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // 1. GLOBAL API PREFIX: /v1
+  // 1. Global API Prefix: /v1
   app.setGlobalPrefix('v1', {
     exclude: ['health', 'api', 'docs'], // Keep Swagger & health clean
   });
 
-  // 2. GLOBAL VALIDATION
+  // 2. Global Validation
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -22,7 +21,7 @@ async function bootstrap() {
     }),
   );
 
-  // 3. CORS — Ready for localhost + production frontend
+  // 3. CORS
   app.enableCors({
     origin: [
       'http://localhost:3000',
@@ -31,10 +30,12 @@ async function bootstrap() {
     credentials: true,
   });
 
-  // 4. SWAGGER — Professional Setup
+  // 4. Swagger
   const config = new DocumentBuilder()
     .setTitle('TaskCollab API')
-    .setDescription('Real-Time Task Collaboration System – Senior Full-Stack Interview')
+    .setDescription(
+      'Real-Time Task Collaboration System – Senior Full-Stack Interview',
+    )
     .setVersion('1.0')
     .addTag('auth', 'Authentication & User Management')
     .addTag('tasks', 'Task CRUD, Assignment & Real-Time Updates')

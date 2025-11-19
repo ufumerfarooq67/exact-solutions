@@ -3,8 +3,8 @@
 
 import { useEffect, useRef } from "react";
 import { io, Socket } from "socket.io-client";
-import { queryClient } from "../components/QueryProvider";
-import { Task } from "../types";
+import { queryClient } from "../components/query-provider";
+import { ITask } from "../types";
 import { TASKS_QUERY_KEY } from "../constants";
 
 export function useWebSocket() {
@@ -37,20 +37,20 @@ export function useWebSocket() {
     });
 
     // Listen to your backend events
-    socket.on("taskCreated", (task: Task) => {
-      queryClient.setQueryData<Task[]>(TASKS_QUERY_KEY, (old = []) => [task, ...old]);
+    socket.on("taskCreated", (task: ITask) => {
+      queryClient.setQueryData<ITask[]>(TASKS_QUERY_KEY, (old = []) => [task, ...old]);
     });
 
-    socket.on("taskAssigned", (task: Task) => {
-      queryClient.setQueryData<Task[]>(TASKS_QUERY_KEY, (old = []) => [task, ...old]);
+    socket.on("taskAssigned", (task: ITask) => {
+      queryClient.setQueryData<ITask[]>(TASKS_QUERY_KEY, (old = []) => [task, ...old]);
     });
 
-    socket.on("taskUpdated", (updatedTask: Task) => {
-      queryClient.setQueryData<Task[]>(TASKS_QUERY_KEY, (old = []) => old.map((t) => (t.id === updatedTask.id ? updatedTask : t)));
+    socket.on("taskUpdated", (updatedTask: ITask) => {
+      queryClient.setQueryData<ITask[]>(TASKS_QUERY_KEY, (old = []) => old.map((t) => (t.id === updatedTask.id ? updatedTask : t)));
     });
 
-    socket.on("taskDeleted", (deletedTask: Task) => {
-      queryClient.setQueryData<Task[]>(TASKS_QUERY_KEY, (old = []) => old.filter((t) => t.id !== deletedTask.id));
+    socket.on("taskDeleted", (deletedTask: ITask) => {
+      queryClient.setQueryData<ITask[]>(TASKS_QUERY_KEY, (old = []) => old.filter((t) => t.id !== deletedTask.id));
     });
     return () => {
       socket.disconnect();

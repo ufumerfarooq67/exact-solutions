@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
   SidebarFooter,
 } from "@/lib/components/ui/sidebar";
-import { useAuth } from "@/lib/contexts/AuthContext";
+import { useAuth } from "@/lib/contexts/auth-context";
 import { Button } from "@/lib/components/ui/button";
 import { Avatar, AvatarFallback } from "@/lib/components/ui/avatar";
 import { Separator } from "@/lib/components/ui/separator";
@@ -92,7 +92,7 @@ export function AppSidebar() {
         <Separator className="mb-4" />
         <div className="flex items-center gap-3 mb-4">
           <Avatar className="h-9 w-9">
-            <AvatarFallback className="text-sm">{user?.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+            <AvatarFallback className="text-sm">{user?.name?.substring(0, 2)?.toUpperCase()}</AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium truncate" data-testid="text-name">

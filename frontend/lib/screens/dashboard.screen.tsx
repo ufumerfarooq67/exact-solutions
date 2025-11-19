@@ -5,15 +5,15 @@ import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/lib/components/ui/card';
 import { Skeleton } from '@/lib/components/ui/skeleton';
 import { ListTodo, CheckCircle, Clock, AlertCircle } from 'lucide-react';
-import { apiRequest } from '../lib/queryClient';
-import { Task } from '../types';
+import { apiRequest } from '../utils/queryClient';
+import { ITask } from '../types';
 import { TASKS_QUERY_KEY } from '../constants';
 
 
 export default function Dashboard() {
-    const { data: tasks, isLoading: tasksLoading } = useQuery<Task[]>({
+    const { data: tasks, isLoading: tasksLoading } = useQuery<ITask[]>({
       queryKey: TASKS_QUERY_KEY,
-      queryFn: () => apiRequest<Task[]>("GET", `${process.env.NEXT_PUBLIC_SERVER_URL}/v1/tasks`),
+      queryFn: () => apiRequest<ITask[]>("GET", `${process.env.NEXT_PUBLIC_SERVER_URL}/v1/tasks`),
     });
   
   const stats = {

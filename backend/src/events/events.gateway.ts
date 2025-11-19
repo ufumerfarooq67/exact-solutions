@@ -1,4 +1,3 @@
-// src/events/events.gateway.ts
 import {
   WebSocketGateway,
   WebSocketServer,
@@ -30,7 +29,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private configService: ConfigService,
   ) {}
 
-  // Frontend calls this after connecting: socket.emit('joinMyRoom', userId)
+
   @SubscribeMessage('joinMyRoom')
   handleJoinMyRoom(
     @MessageBody() userId: number,
@@ -42,6 +41,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     client.emit('joinedRoom', { room });
   }
 
+  // Handle incoming connections
   handleConnection(client: Socket) {
     const token =
       client.handshake.auth?.token?.split(' ')?.[1] ||
@@ -79,6 +79,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
+  // Handle disconnections
   handleDisconnect(client: Socket) {
     const userId = client.data.user?.sub;
     if (userId) {
@@ -86,13 +87,13 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  // Called from TasksService
+  // Single user emit
   emitToUser(userId: number, event: string, data: any) {
     const room = `user_${userId}`;
     this.server.to(room).emit(event, data);
   }
 
-  // Global broadcast
+  // Broadcaster
   emitGlobal(event: string, data: any) {
     this.server.emit(event, data);
   }
