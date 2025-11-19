@@ -170,7 +170,7 @@ All tests pass on Windows
 ---
 
 
-### Improvements
+### Future Improvements
  - Better folder structure e.g Domain Driver or Feature Based (Frontend)
  - Security Middelwares
  - Policy Based or Permission Based Authorization
@@ -184,3 +184,7 @@ All tests pass on Windows
  - GraphQL/Hasura (best to improve performance)
  - Prisma ORM
  - and more....
+
+
+### Remarks
+Given proper time, this project can be improved further.
