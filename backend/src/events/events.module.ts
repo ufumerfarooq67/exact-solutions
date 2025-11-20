@@ -1,4 +1,3 @@
-// src/events/events.module.ts
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EventLog, EventLogSchema } from './schemas/event-log.schema';

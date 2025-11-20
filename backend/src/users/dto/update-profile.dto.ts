@@ -1,4 +1,3 @@
-// src/users/dto/update-profile.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsOptional, IsEnum } from 'class-validator';
 import { UserRole } from '../entities/user.entity';
